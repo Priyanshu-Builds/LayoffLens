@@ -10,6 +10,7 @@ Using SQL, the project performs:
 
 ## Repository Structure
 
+```markdown
 LayoffLens/
 │
 ├── LICENSE                # License file (e.g., MIT License)
@@ -17,7 +18,7 @@ LayoffLens/
 ├── clean_data.sql         # SQL script to load and clean raw layoffs data from layoffs.csv
 ├── layoffs.csv            # The raw dataset CSV file
 └── trend_analysis.sql     # SQL script to perform extensive exploratory data analysis on the cleaned data
-
+```
 
 ## Key Features
 
