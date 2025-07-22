@@ -1,6 +1,6 @@
 ## 💼 LayoffLens – Workforce Analytics & Layoff Prediction
 
-A full-stack data project analyzing layoff trends and predicting workforce reductions using **SQL**, **Python**, **Tableau**, and **AWS**. From raw CSV data to insightful dashboards and an interpretable ML model, LayoffLens helps uncover hidden workforce trends.
+### A full-stack data project analyzing layoff trends and predicting workforce reductions using **SQL**, **Python**, **Tableau**, and **AWS**. From raw CSV data to insightful dashboards and an interpretable ML model, LayoffLens helps uncover hidden workforce trends.
 ![alt text](LayoffLens.png)
 ---
 
