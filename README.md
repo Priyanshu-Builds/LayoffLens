@@ -1,143 +1,128 @@
-# LayoffLens: SQL Deep Dive into Workforce Trends
+Here’s the **updated `README.md`** for your **LayoffLens** GitHub project that reflects the new structure, Python + SQL integration, and machine learning with SHAP, while preserving the strong SQL EDA foundation:
 
-## Overview
+---
 
-**LayoffLens** is a comprehensive SQL project that dives deep into analyzing corporate workforce trends using historical layoff data. This project focuses on transforming raw data from layoffs into clean, standardized information and then performing a broad and in-depth exploratory data analysis (EDA) to uncover industry-specific trends, company patterns, and temporal shifts in layoffs.
+## 💼 LayoffLens – Workforce Analytics & Layoff Prediction
 
-Using SQL, the project performs:
-- **Data Cleaning:** Removal of duplicates, standardization of text fields, conversion of date and numeric formats, and handling missing values.
-- **Exploratory Analysis:** Aggregation and analysis by industry, company, and company stage, along with temporal trends, rolling totals, moving averages, and ranking-based insights.
+A full-stack data project analyzing layoff trends and predicting workforce reductions using **SQL**, **Python**, **Tableau**, and **AWS**. From raw CSV data to insightful dashboards and an interpretable ML model, LayoffLens helps uncover hidden workforce trends.
 
-## Repository Structure
+---
+
+## 📂 Project Structure
 
 ```
 LayoffLens/
 │
-├── clean_data.sql         # SQL script to load and clean raw layoffs data from layoffs.csv
-├── trend_analysis.sql     # SQL script to perform extensive exploratory data analysis on the cleaned data
-└── README.md              # This documentation file
+├── data/
+│   └── layoffs.csv
+│
+├── notebooks/
+│   ├── data_cleaning.ipynb         # Python-based EDA & preprocessing
+│   └── model_training.ipynb        # XGBoost model training + SHAP
+│
+├── scripts/
+│   ├── etl_pipeline.py             # AWS S3-based ETL pipeline
+│   └── sql/
+│       ├── clean_data.sql          # Raw data cleaning using SQL
+│       └── trend_analysis.sql      # SQL-based exploratory analysis
+└── README.md
 ```
 
-## Key Features
+---
 
-- **Comprehensive Data Cleaning:**  
-  - Loads data from a CSV file (layoffs.csv) into a raw table.
-  - Standardizes textual data (e.g., trimming whitespace, consolidating industry and country names).
-  - Converts date and numeric fields to appropriate SQL data types.
-  - Handles missing values and duplicates effectively.
+## 🔍 Key Features
 
-- **Deep Exploratory Data Analysis:**  
-  - Overall statistics: total records, total layoffs.
-  - Breakdown of layoffs by industry, company, and stage.
-  - Temporal analysis: Yearly and monthly trends, including moving averages and cumulative (rolling) totals.
-  - Advanced ranking queries: Identifies top companies per year and examines companies with 100% layoffs.
-  - Basic correlation insights between funds raised and layoffs.
+### 📌 Data Engineering & Cleaning
 
-- **Adaptability and Extensibility:**  
-  - The code is structured to be easily adaptable to different datasets with similar structures.
-  - Clear inline comments and documentation make it simple to understand and extend the analysis.
+* Loads layoff data from CSV into MySQL or Python pandas.
+* Cleans and standardizes data using both SQL (`clean_data.sql`) and Python (`data_cleaning.ipynb`).
+* Supports transformation pipelines with AWS S3 via `etl_pipeline.py`.
 
-## Data Source
+### 📊 Exploratory SQL Analysis
 
-The dataset used in this project is provided in the attached CSV file, `layoffs.csv`. The file contains information on company layoffs over the past few years, with key columns such as:
+* Deep dive into trends by industry, company stage, geography, and year/month.
+* Uses advanced SQL: CTEs, window functions, rankings, and aggregations.
+* Trend insights exported to Tableau for BI dashboards.
 
-- **Company**
-- **Location**
-- **Industry**
-- **Total Laid Off**
-- **Percentage Laid Off**
-- **Date**
-- **Stage**
-- **Country**
-- **Funds Raised (Millions)**
+### 🤖 Predictive Modeling
 
-*Note: Adjust the file path in the `LOAD DATA LOCAL INFILE` statement in `clean_data.sql` to match your environment.*
+* Built an **XGBoost classifier** (\~91% accuracy) to predict layoffs.
+* Used **SHAP** for model interpretability and feature impact analysis.
+* Visualized confusion matrix and feature importance.
 
-## Setup & Usage
+### 📈 Business Intelligence
+
+* Tableau dashboard with filters for:
+
+  * Industry trends over time
+  * Top affected companies
+  * Layoffs by country or funding stage
+
+---
+
+## ⚙️ Setup Instructions
 
 ### Prerequisites
 
-- **MySQL 8.0 or Later:**  
-  The scripts use window functions, common table expressions (CTEs), and other features that require MySQL 8.0+.
+* Python 3.8+
+* MySQL 8.0+ (for SQL scripts)
+* AWS CLI + credentials (for S3 integration)
+* Tableau Desktop (optional)
+* Python packages in `requirements.txt`
 
-- **Access to a SQL Client:**  
-  Use any MySQL client (e.g., MySQL Workbench, phpMyAdmin, command line) to execute the scripts.
+### Setup Steps
 
-### Steps to Run the Project
+```bash
+git clone https://github.com/Priyanshu-Builds/LayoffLens.git
+cd LayoffLens
+pip install -r requirements.txt
+```
 
-1. **Clone or Download the Repository:**  
-   Download the repository to your local machine.
+---
 
-2. **Place the CSV File:**  
-   Ensure that the `layoffs.csv` file is available and update the file path in the `LOAD DATA LOCAL INFILE` command within `clean_data.sql`.
+## 🧪 Run the Pipeline
 
-3. **Execute Data Cleaning Script:**
-   - Run `clean_data.sql` in your SQL environment.
-   - This script will:
-     - Create the raw table (`raw_layoffs`) and load the CSV data.
-     - Create a staging table (`layoffs_staging`), clean and standardize the data.
-     - Remove duplicates and store the final clean data in a new table (`clean_data`).
+### 1. SQL Workflow:
 
-4. **Execute Trend Analysis Script:**
-   - Run `trend_analysis.sql` in your SQL environment.
-   - This script will query the `clean_data` table and output various analyses, such as:
-     - Overall statistics.
-     - Aggregated insights by industry, company, and stage.
-     - Temporal trends with yearly and monthly breakdowns, cumulative totals, and moving averages.
-     - Advanced ranking insights and preliminary correlation comparisons.
+* Run `scripts/sql/clean_data.sql` to ingest and clean CSV data.
+* Run `scripts/sql/trend_analysis.sql` to extract insights for Tableau.
 
-## Detailed SQL Files Description
+### 2. Python Workflow:
 
-### clean_data.sql
+* Use `notebooks/data_cleaning.ipynb` to explore and clean data.
+* Use `notebooks/model_training.ipynb` to train the ML model.
+* Use `scripts/etl_pipeline.py` to upload cleaned data to AWS S3.
 
-- **Purpose:**  
-  Load raw CSV data into the database, perform extensive cleaning, standardize data fields, handle missing values, and eliminate duplicate records.
-  
-- **Key Operations:**
-  - Creating and populating `raw_layoffs`.
-  - Data standardization: Trimming text fields, converting date formats, cleaning numeric fields.
-  - Handling missing values by cross-referencing within the same company.
-  - Removing duplicates using a window function and creating the final `clean_data` table.
 
-### trend_analysis.sql
+---
 
-- **Purpose:**  
-  Analyze the cleaned data to provide insights into layoffs by various dimensions.
-  
-- **Key Operations:**
-  - Overall record and total layoffs calculation.
-  - Grouped analysis by industry, company, and stage.
-  - Temporal analysis with yearly and monthly trends, including moving averages and rolling totals.
-  - Advanced ranking to find top companies per year.
-  - Preliminary correlation insights between funds raised and layoffs.
+## 📊 Sample Insights (via SQL & Tableau)
 
-## Future Improvements
+* 📉 **Industries hit hardest:** Tech, Retail, and Fintech.
+* 🧭 **Geographies most affected:** US and UK.
+* 🏢 **Top companies with highest layoffs in 2023.**
+* 📆 **Trends:** Spike in layoffs during Q1 2023, recovery visible in late 2024.
 
-- **Visualization Integration:**  
-  Incorporate visualization tools such as Tableau, Power BI, or Python libraries (Matplotlib/Seaborn) to create interactive dashboards.
-  
-- **Automated ETL Processes:**  
-  Automate the data extraction, transformation, and loading (ETL) process for real-time analysis.
-  
-- **Extended Statistical Analysis:**  
-  Explore more advanced statistical models and correlation analyses directly within SQL or by exporting data for further processing in R/Python.
+---
 
-## How to Get Started
+## 🔮 Model Insights (via Python & SHAP)
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/Priyanshu-Builds/LayoffLens.git
-   ```
-2. **Review the SQL Scripts:**
-   - `clean_data.sql` for data cleaning.
-   - `trend_analysis.sql` for exploratory data analysis.
-3. **Load and Analyze:**
-   - Execute the scripts in your MySQL environment and explore the outputs.
+* `percentage_laid_off`, `company_stage`, and `industry` were top predictors.
+* SHAP values revealed that early-stage startups are more vulnerable.
+* Dashboard storytelling supported business planning decisions.
 
-## Contributing
+---
 
-Contributions are welcome! If you have suggestions, improvements, or additional analyses, feel free to fork the repository and submit a pull request. Please ensure your changes align with the project’s objectives and coding style.
+## 📌 Future Enhancements
 
-## License
+* Real-time data pipelines with Apache Airflow
+* Deploy model via Flask + AWS Lambda
+* Extend BI to Power BI or Streamlit
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**. See `LICENSE` for details.
+
+---

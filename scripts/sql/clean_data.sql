@@ -1,13 +1,13 @@
 /*
-    LayoffLens: SQL Deep Dive into Workforce Trends
-    File: clean_data.sql
+    LayoffLens
     Purpose: 
       - Load and clean the raw layoffs dataset from the attached CSV file.
       - Remove duplicates, standardize text, convert date formats,
         and prepare numeric fields for analysis.
     Dataset: layoffs.csv (attached)
 */
-
+CREATE DATABASE LayoffLens;
+USE LayoffLens;
 /* -----------------------------
    Step 0: Create Raw Table
    ----------------------------- */
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS raw_layoffs (
     country                VARCHAR(255),
     funds_raised_millions  VARCHAR(50)
 );
-
+describe table raw_layoffs;
 /* -----------------------------
    Step 1: Load CSV Data
    ----------------------------- */
@@ -31,12 +31,24 @@ CREATE TABLE IF NOT EXISTS raw_layoffs (
    This command assumes that fields are comma-separated, enclosed by double quotes,
    and that the first line contains headers.
 */
-LOAD DATA LOCAL INFILE 'layoffs.csv'
+SET GLOBAL local_infile = 1;
+SHOW VARIABLES LIKE 'secure_file_priv';
+
+ALTER TABLE raw_layoffs ADD COLUMN funds_raised VARCHAR(255);
+
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/layoffs.csv'
 INTO TABLE raw_layoffs
-FIELDS TERMINATED BY ',' 
+FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
+IGNORE 1 LINES
+(company, location, industry, @total_laid_off, percentage_laid_off, date, stage, country, funds_raised)
+SET total_laid_off = NULLIF(@total_laid_off, '');
+
+
+
+
 
 /* -----------------------------
    Step 2: Create a Staging Table for Cleaning
@@ -48,6 +60,9 @@ SELECT * FROM raw_layoffs;
 /* -----------------------------
    Step 3: Text Standardization
    ----------------------------- */
+   
+SET SQL_SAFE_UPDATES = 0;
+
 UPDATE layoffs_staging
 SET company  = TRIM(company),
     location = TRIM(location),
@@ -79,7 +94,8 @@ SET stage = UPPER(stage);
    Adjust the format string if your CSV uses a different date format.
 */
 UPDATE layoffs_staging
-SET date = STR_TO_DATE(date, '%m/%d/%Y');
+SET date = STR_TO_DATE(SUBSTRING_INDEX(date, 'T', 1), '%Y-%m-%d');
+
 
 ALTER TABLE layoffs_staging
 MODIFY COLUMN date DATE;
@@ -95,6 +111,15 @@ MODIFY COLUMN funds_raised_millions DECIMAL(10,2);
 /* Clean percentage_laid_off: remove any '%' symbols and convert to DECIMAL */
 UPDATE layoffs_staging
 SET percentage_laid_off = REPLACE(percentage_laid_off, '%', '');
+
+SELECT DISTINCT percentage_laid_off
+FROM layoffs_staging
+WHERE percentage_laid_off NOT REGEXP '^[0-9]+(\.[0-9]+)?$';
+
+UPDATE layoffs_staging
+SET percentage_laid_off = NULL
+WHERE percentage_laid_off NOT REGEXP '^[0-9]+(\.[0-9]+)?$';
+
 
 ALTER TABLE layoffs_staging
 MODIFY COLUMN percentage_laid_off DECIMAL(5,2);

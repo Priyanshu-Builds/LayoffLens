@@ -1,6 +1,5 @@
 /*
-    LayoffLens: SQL Deep Dive into Workforce Trends
-    File: trend_analysis.sql
+    LayoffLens
     Purpose: 
       - Perform a broad range of exploratory analyses on the cleaned layoffs dataset.
       - Provide insights by industry, company, stage, temporal trends, and more.
@@ -72,14 +71,15 @@ WITH yearly_company AS (
     SELECT company,
            YEAR(date) AS year,
            SUM(total_laid_off) AS yearly_layoffs,
-           DENSE_RANK() OVER (PARTITION BY YEAR(date) ORDER BY SUM(total_laid_off) DESC) AS rank
+           DENSE_RANK() OVER (PARTITION BY YEAR(date) ORDER BY SUM(total_laid_off) DESC) AS `rank`
     FROM clean_data
     GROUP BY company, YEAR(date)
 )
 SELECT year, company, yearly_layoffs
 FROM yearly_company
-WHERE rank <= 5
-ORDER BY year, rank;
+WHERE `rank` <= 5
+ORDER BY year, `rank`;
+
 
 /* -----------------------------
    Temporal Analysis: Monthly Trends and Rolling Totals
@@ -121,7 +121,9 @@ ordered_months AS (
 SELECT m1.month,
        AVG(m2.monthly_total) AS moving_avg_3_months
 FROM ordered_months m1
-JOIN ordered_months m2 ON m2.rn BETWEEN m1.rn - 2 AND m1.rn
+JOIN ordered_months m2
+  ON m2.rn BETWEEN m1.rn - 2 AND m1.rn
+WHERE m1.rn >= 3
 GROUP BY m1.month
 ORDER BY m1.month;
 
