@@ -2,7 +2,6 @@
 
 ### A full-stack data project analyzing layoff trends and predicting workforce reductions using **SQL**, **Python**, **Tableau**, and **AWS**. From raw CSV data to insightful dashboards and an interpretable ML model, LayoffLens helps uncover hidden workforce trends.
 ![alt text](LayoffLens.png)
----
 
 ## 📂 Project Structure
 
@@ -24,7 +23,6 @@ LayoffLens/
 └── README.md
 ```
 
----
 
 ## 🔍 Key Features
 
@@ -54,7 +52,6 @@ LayoffLens/
   * Top affected companies
   * Layoffs by country or funding stage
 
----
 
 ## ⚙️ Setup Instructions
 
@@ -74,7 +71,6 @@ cd LayoffLens
 pip install -r requirements.txt
 ```
 
----
 
 ## 🧪 Run the Pipeline
 
@@ -90,7 +86,7 @@ pip install -r requirements.txt
 * Use `scripts/etl_pipeline.py` to upload cleaned data to AWS S3.
 
 
----
+
 
 ## 📊 Sample Insights (via SQL & Tableau)
 
@@ -99,7 +95,7 @@ pip install -r requirements.txt
 * 🏢 **Top companies with highest layoffs in 2023.**
 * 📆 **Trends:** Spike in layoffs during Q1 2023, recovery visible in late 2024.
 
----
+
 
 ## 🔮 Model Insights (via Python & SHAP)
 
@@ -107,18 +103,10 @@ pip install -r requirements.txt
 * SHAP values revealed that early-stage startups are more vulnerable.
 * Dashboard storytelling supported business planning decisions.
 
----
+
 
 ## 📌 Future Enhancements
 
 * Real-time data pipelines with Apache Airflow
 * Deploy model via Flask + AWS Lambda
 * Extend BI to Power BI or Streamlit
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**. See `LICENSE` for details.
-
----
