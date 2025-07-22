@@ -1,11 +1,8 @@
-Here’s the **updated `README.md`** for your **LayoffLens** GitHub project that reflects the new structure, Python + SQL integration, and machine learning with SHAP, while preserving the strong SQL EDA foundation:
-
----
-
 ## 💼 LayoffLens – Workforce Analytics & Layoff Prediction
 
 A full-stack data project analyzing layoff trends and predicting workforce reductions using **SQL**, **Python**, **Tableau**, and **AWS**. From raw CSV data to insightful dashboards and an interpretable ML model, LayoffLens helps uncover hidden workforce trends.
 
+![alt text](LayoffLens.png)
 ---
 
 ## 📂 Project Structure
